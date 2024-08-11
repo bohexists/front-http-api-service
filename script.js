@@ -52,7 +52,8 @@ document.getElementById("deleteUserForm").addEventListener("submit", function(ev
         .then(data => displayResponse(data));
 });
 
-document.getElementById("getAllUsers").addEventListener("click", function() {
+document.getElementById("getAllUsersForm").addEventListener("submit", function(event) {
+    event.preventDefault();
     fetch("http://localhost:8080/users")
         .then(response => response.json())
         .then(data => displayResponse(data));
