@@ -52,11 +52,13 @@ document.getElementById("deleteUserForm").addEventListener("submit", function(ev
         .then(data => displayResponse(data));
 });
 
-document.getElementById("getAllUsersForm").addEventListener("submit", function(event) {
-    event.preventDefault();
+document.getElementById("getAllUsers").addEventListener("click", function() {
     fetch("http://localhost:8080/users")
         .then(response => response.json())
-        .then(data => displayResponse(data));
+        .then(data => displayResponse(data))
+        .catch(error => {
+            showAlert('Error: ' + error);
+        });
 });
 
 function displayResponse(data) {
