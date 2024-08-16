@@ -1,67 +1,84 @@
-document.getElementById("createUserForm").addEventListener("submit", function(event) {
-    event.preventDefault();
+// Define functions to interact with API
+function createUser() {
     const data = {
-        first_name: document.getElementById("firstName").value,
-        second_name: document.getElementById("secondName").value,
-        email: document.getElementById("email").value,
-        password: document.getElementById("password").value
+        first_name: document.getElementById('firstName').value,
+        second_name: document.getElementById('secondName').value,
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
     };
-    fetch("http://localhost:8080/user", {
-        method: "POST",
+
+    fetch('/user', {
+        method: 'POST',
         headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data)
-    }).then(response => response.json())
-        .then(data => displayResponse(data));
-});
-
-document.getElementById("getUserForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    const userId = document.getElementById("userId").value;
-    fetch(`http://localhost:8080/user/${userId}`)
+        body: JSON.stringify(data),
+    })
         .then(response => response.json())
-        .then(data => displayResponse(data));
-});
+        .then(data => {
+            document.getElementById('createUserResult').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        })
+        .catch(error => console.error('Error:', error));
+}
 
-document.getElementById("updateUserForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    const userId = document.getElementById("updateUserId").value;
+function getUser() {
+    const userId = document.getElementById('userId').value;
+
+    fetch(`/user/${userId}`, {
+        method: 'GET',
+    })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('getUserResult').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function updateUser() {
+    const userId = document.getElementById('updateUserId').value;
     const data = {
-        first_name: document.getElementById("updateFirstName").value,
-        second_name: document.getElementById("updateSecondName").value,
-        email: document.getElementById("updateEmail").value,
-        password: document.getElementById("updatePassword").value
+        first_name: document.getElementById('updateFirstName').value,
+        second_name: document.getElementById('updateSecondName').value,
+        email: document.getElementById('updateEmail').value,
+        password: document.getElementById('updatePassword').value
     };
-    fetch(`http://localhost:8080/user/${userId}`, {
-        method: "PUT",
+
+    fetch(`/user/${userId}`, {
+        method: 'PUT',
         headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data)
-    }).then(response => response.json())
-        .then(data => displayResponse(data));
-});
-
-document.getElementById("deleteUserForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    const userId = document.getElementById("deleteUserId").value;
-    fetch(`http://localhost:8080/user/${userId}`, {
-        method: "DELETE"
-    }).then(response => response.json())
-        .then(data => displayResponse(data));
-});
-
-document.getElementById("getAllUsers").addEventListener("click", function() {
-    fetch("http://localhost:8080/users")
+        body: JSON.stringify(data),
+    })
         .then(response => response.json())
-        .then(data => displayResponse(data))
-        .catch(error => {
-            showAlert('Error: ' + error);
-        });
-});
+        .then(data => {
+            document.getElementById('updateUserResult').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        })
+        .catch(error => console.error('Error:', error));
+}
 
-function displayResponse(data) {
-    const responseDiv = document.getElementById("response");
-    responseDiv.textContent = JSON.stringify(data, null, 2);
+function deleteUser() {
+    const userId = document.getElementById('deleteUserId').value;
+
+    fetch(`/user/${userId}`, {
+        method: 'DELETE',
+    })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('deleteUserResult').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function searchUser() {
+    const email = document.getElementById('searchEmail').value;
+
+    fetch(`/user/search?email=${encodeURIComponent(email)}`, {
+        method: 'GET',
+    })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('searchUserResult').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        })
+        .catch(error => console.error('Error:', error));
 }
