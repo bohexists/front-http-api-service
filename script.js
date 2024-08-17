@@ -82,3 +82,14 @@ function searchUser() {
         })
         .catch(error => console.error('Error:', error));
 }
+
+function getAllUsers() {
+    fetch('/users', {
+        method: 'GET',
+    })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('getAllUsersResult').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        })
+        .catch(error => console.error('Error:', error));
+}
